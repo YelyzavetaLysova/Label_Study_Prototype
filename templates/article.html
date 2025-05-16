@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ article['Title'] }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+    <h1>{{ article['Title'] }}</h1>
+    <img src="{{ article['Image URL'] or 'https://placehold.co/800x400?text=No+Image' }}" class="img-fluid mb-3" alt="{{ article['Title'] }}">
+    <p>{{ article['Content'] }}</p>
+
+    <h2 class="mt-5">Recommended Articles</h2>
+    <form method="POST">
+        <div class="list-group">
+            {% for rec in recommendations %}
+            <button type="submit" name="selected_article_id" value="{{ rec['index'] }}" class="list-group-item list-group-item-action">
+                <strong>{{ rec['Title'] }}</strong> - {{ rec['Content'][:100] }}...
+            </button>
+            {% endfor %}
+        </div>
+    </form>
+</body>
+</html>
