@@ -4,21 +4,44 @@
     <meta charset="UTF-8">
     <title>{{ article['Title'] }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .recommendation-card {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .recommendation-card img {
+            width: 100px;
+            height: 60px;
+            object-fit: cover;
+            margin-left: auto;
+        }
+    </style>
 </head>
-<body class="container mt-5">
-    <h1>{{ article['Title'] }}</h1>
-    <img src="{{ article['Image URL'] or 'https://placehold.co/800x400?text=No+Image' }}" class="img-fluid mb-3" alt="{{ article['Title'] }}">
-    <p>{{ article['Content'] }}</p>
+<body class="container mt-5" style="max-width: 800px;">
+    <h1 class="text-center mb-4">Choose from recommended related articles</h1>
 
-    <h2 class="mt-5">Recommended Articles</h2>
+    <div class="mb-5">
+        <h2>{{ article['Title'] }}</h2>
+        <img src="{{ article['Image URL'] or 'https://placehold.co/600x400?text=No+Image' }}" class="img-fluid mb-3">
+        <p>{{ article['Content'] }}</p>
+    </div>
+
+<h3>More</h3>
+<div class="list-group">
     <form method="POST">
-        <div class="list-group">
-            {% for rec in recommendations %}
-            <button type="submit" name="selected_article_id" value="{{ rec['index'] }}" class="list-group-item list-group-item-action">
-                <strong>{{ rec['Title'] }}</strong> - {{ rec['Content'][:100] }}...
-            </button>
-            {% endfor %}
-        </div>
+        {% for rec in recommendations %}
+        <button type="submit" name="selected_article_id" value="{{ rec['index'] }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-1">{{ rec['Title'] }}</h5>
+                <p class="mb-1 text-muted small">{{ rec['Content'][:100] }}...</p>
+            </div>
+            <img src="{{ rec['Image URL'] or 'https://placehold.co/100x60?text=No+Image' }}" alt="{{ rec['Title'] }}" class="img-thumbnail" style="width: 100px; height: 60px; object-fit: cover;">
+        </button>
+        {% endfor %}
     </form>
+</div>
+
 </body>
 </html>

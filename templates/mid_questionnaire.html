@@ -9,14 +9,20 @@
     <h1>Mid-Questionnaire</h1>
     <form method="POST">
         <div class="mb-3">
-            <label class="form-label">How relevant was the article?</label>
-            <select name="relevance" class="form-select">
-                <option>Very relevant</option>
-                <option>Somewhat relevant</option>
-                <option>Not relevant</option>
+            <label class="form-label">How useful did you find the recommended articles?</label>
+            <select name="usefulness" class="form-select" required>
+                <option value="" disabled selected>Select your answer</option>
+                <option>Very Useful</option>
+                <option>Somewhat Useful</option>
+                <option>Neutral</option>
+                <option>Not Very Useful</option>
+                <option>Not Useful at All</option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Continue</button>
     </form>
+
+
+
 </body>
 </html>

@@ -2,11 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Thank You</title>
+    <title>Post-Questionnaire</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="container mt-5 text-center">
-    <h1>Thank You for Participating!</h1>
-    <p>Your responses have been recorded. You may now close this window.</p>
+<body class="container mt-5" style="max-width: 800px;">
+    <h1 class="mb-4">Post-Questionnaire</h1>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="confidence" class="form-label">How confident do you feel in identifying trustworthy news after completing this study?</label>
+            <select class="form-select" id="confidence" name="confidence" required>
+                <option value="">Select your answer</option>
+                <option>Very Confident</option>
+                <option>Somewhat Confident</option>
+                <option>Neutral</option>
+                <option>Somewhat Unconfident</option>
+                <option>Very Unconfident</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="feedback" class="form-label">Do you have any comments or suggestions about this study?</label>
+            <textarea class="form-control" id="feedback" name="feedback" rows="4"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit and Finish</button>
+    </form>
+
+
+
 </body>
 </html>
