@@ -2,27 +2,176 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mid-Questionnaire</title>
+    <title>Mid Questionnaire</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .card {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 2rem;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .form-section { margin-bottom: 2rem; }
+        .likert-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        .likert-labels {
+            display: flex;
+            justify-content: space-between;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+    function updateCheckboxStates() {
+        const checkboxes = document.querySelectorAll('input[name="choice_elements"]');
+        const otherCheckbox = document.getElementById('el6');
+        const noneCheckbox = document.getElementById('el7');
+        const otherInput = document.getElementById('otherElement');
+
+        // Show/hide the "Other" textbox, but do not disable other options
+        if (otherCheckbox.checked) {
+            otherInput.classList.remove('hidden');
+            otherInput.required = true;
+        } else {
+            otherInput.classList.add('hidden');
+            otherInput.required = false;
+        }
+
+        // "Don't know" disables everything else
+        if (noneCheckbox.checked) {
+            checkboxes.forEach(cb => {
+                if (cb !== noneCheckbox) {
+                    cb.disabled = true;
+                }
+            });
+            otherInput.classList.add('hidden');
+            otherInput.required = false;
+        } else {
+            checkboxes.forEach(cb => {
+                cb.disabled = false;
+            });
+        }
+    }
+
+    function validateForm() {
+        const checkboxes = document.querySelectorAll('input[name="choice_elements"]');
+        let oneChecked = false;
+        checkboxes.forEach(cb => { if (cb.checked) oneChecked = true; });
+
+        if (!oneChecked) {
+            alert('Please select at least one element that influenced your choice.');
+            return false;
+        }
+
+        const otherCheckbox = document.getElementById('el6');
+        const otherInput = document.getElementById('otherElement');
+        if (otherCheckbox.checked && otherInput.value.trim() === '') {
+            alert("Please specify what 'Other' means.");
+            return false;
+        }
+
+        const noneCheckbox = document.getElementById('el7');
+        if (noneCheckbox.checked) {
+            const othersSelected = [...checkboxes].some(cb => cb !== noneCheckbox && cb.checked);
+            if (othersSelected) {
+                alert("'Don't know' cannot be selected with other options.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+</script>
+
 </head>
-<body class="container mt-5">
-    <h1>Mid-Questionnaire</h1>
-    <form method="POST">
-        <div class="mb-3">
-            <label class="form-label">How useful did you find the recommended articles?</label>
-            <select name="usefulness" class="form-select" required>
-                <option value="" disabled selected>Select your answer</option>
-                <option>Very Useful</option>
-                <option>Somewhat Useful</option>
-                <option>Neutral</option>
-                <option>Not Very Useful</option>
-                <option>Not Useful at All</option>
-            </select>
+<body>
+<div class="card">
+    <h2 class="mb-4 text-center">Mid Questionnaire</h2>
+    <form method="POST" onsubmit="return validateForm()">
+
+        <!-- 1. Elements influencing article choice -->
+        <div class="form-section">
+            <label class="form-label">1. Please select one or several elements that made you choose this article:</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="choice_elements" value="Image label" id="el1" onchange="updateCheckboxStates()">
+                <label class="form-check-label" for="el1">The image label</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="choice_elements" value="Picture" id="el2" onchange="updateCheckboxStates()">
+                <label class="form-check-label" for="el2">The picture</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="choice_elements" value="Headline" id="el3" onchange="updateCheckboxStates()">
+                <label class="form-check-label" for="el3">The headline</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="choice_elements" value="Paragraph" id="el4" onchange="updateCheckboxStates()">
+                <label class="form-check-label" for="el4">The short paragraph below the headline</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="choice_elements" value="Topic" id="el5" onchange="updateCheckboxStates()">
+                <label class="form-check-label" for="el5">The topic</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="choice_elements" value="Other (please specify)" id="el6" onchange="updateCheckboxStates()">
+                <label class="form-check-label" for="el6">Other (please specify)</label>
+                <input type="text" class="form-control mt-2 hidden" name="other_element" id="otherElement" placeholder="Specify other reason">
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="choice_elements" value="Don't know / None of these" id="el7" onchange="updateCheckboxStates()">
+                <label class="form-check-label" for="el7">Don't know / None of these</label>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary">Continue</button>
+
+        <!-- 2. Trust questions -->
+        <div class="form-section">
+            <label class="form-label">2. Please indicate how much you agree or disagree with the following statements:</label>
+
+            <p><em>I trust this article most among all 4 recommended articles.</em></p>
+            <div class="likert-container">
+                <label for="trust_article_1">1</label>
+                <input type="radio" name="trust_article" value="1" id="trust_article_1" required>
+                <input type="radio" name="trust_article" value="2" id="trust_article_2">
+                <input type="radio" name="trust_article" value="3" id="trust_article_3">
+                <input type="radio" name="trust_article" value="4" id="trust_article_4">
+                <input type="radio" name="trust_article" value="5" id="trust_article_5">
+                <input type="radio" name="trust_article" value="6" id="trust_article_6">
+                <input type="radio" name="trust_article" value="7" id="trust_article_7">
+                <label for="trust_article_7">7</label>
+            </div>
+            <div class="likert-labels">
+                <small>Strongly disagree</small>
+                <small>Strongly agree</small>
+            </div>
+
+            <p class="mt-4"><em>I think the cover image in this article is trustworthy.</em></p>
+            <div class="likert-container">
+                <label for="trust_image_1">1</label>
+                <input type="radio" name="trust_image" value="1" id="trust_image_1" required>
+                <input type="radio" name="trust_image" value="2" id="trust_image_2">
+                <input type="radio" name="trust_image" value="3" id="trust_image_3">
+                <input type="radio" name="trust_image" value="4" id="trust_image_4">
+                <input type="radio" name="trust_image" value="5" id="trust_image_5">
+                <input type="radio" name="trust_image" value="6" id="trust_image_6">
+                <input type="radio" name="trust_image" value="7" id="trust_image_7">
+                <label for="trust_image_7">7</label>
+            </div>
+            <div class="likert-labels">
+                <small>Strongly disagree</small>
+                <small>Strongly agree</small>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Continue</button>
+        </div>
     </form>
-
-
-
+</div>
 </body>
 </html>
