@@ -17,13 +17,15 @@
     }
 
     .card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-5px);
     }
 
     .card-title {
-      font-size: 1.1rem;
+      font-size: 1.5rem;
       font-weight: 600;
       padding-right: 2em;
+      display: flex;
+      flex-wrap: wrap;
     }
 
     .card-text {
@@ -36,7 +38,7 @@
         height: 3em;
         object-fit: cover;
         flex-shrink: 0;
-        justify-content: right;
+        /* margin-top: -75px; */
     }
 
     a.article-link {
@@ -48,13 +50,15 @@
         display: flex;
         flex-direction: row;
         width: 100%;
+        justify-content: space-between;
+        margin-bottom: 1em;
     }
   </style>
 </head>
 <body class="bg-light">
 
   <div class="container py-5">
-    <h1 class="text-center mb-4">Select the news article that you are most interested to read</h1>
+    <h1 class="text-center mb-4">Select one of the following news articles.</h1>
 
     <div class="row g-4">
       {% for article in articles %}
@@ -67,7 +71,7 @@
                 <h5 class="card-title">{{ article['Title'] }}</h5>
                 <img class="article_label" src="static/images/transp_score_colour_collapsed.png">
               </div>
-              <p class="card-text">{{ article['Content'][:150] }}...</p>
+              <p class="card-text">{{ article['Content'][:250] }}...</p>
             </div>
           </div>
         </a>
